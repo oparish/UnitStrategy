@@ -10,15 +10,23 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
+import map.BackMap;
 import unit.UnitType;
 
 public class Main
 {
 	private static final String UNITDATA_LOCATION = "src/data/UnitData.json";
+	private static final String MAPDATA_LOCATION = "src/data/MapData.json";
 	
 	private static final String UNITTYPES = "UNITTYPES";
 	
 	public static void main(String[] args)
+	{
+		ArrayList<UnitType> unitTypeList = Main.loadUnitTypeList();
+		BackMap backMap = Main.loadBackMap();
+	}
+	
+	private static ArrayList<UnitType> loadUnitTypeList()
 	{
 		JsonObject unitData = Main.loadJsonObjectFromFilePath(UNITDATA_LOCATION);
 		JsonArray unitTypes = unitData.getJsonArray(UNITTYPES);
@@ -29,6 +37,14 @@ public class Main
 			JsonObject unitTypeJson = unitTypes.getJsonObject(i);
 			unitTypeList.add(new UnitType(unitTypeJson));
 		}
+		return unitTypeList;
+	}
+	
+	private static BackMap loadBackMap()
+	{
+		JsonObject mapData = Main.loadJsonObjectFromFilePath(MAPDATA_LOCATION);
+		BackMap backMap = new BackMap(mapData);
+		return backMap;
 	}
 	
 	protected static JsonObject loadJsonObjectFromFilePath(String filepath)
